@@ -62,7 +62,7 @@ jobs:
           command: |
             # Your code here
             npm i
-            nnpm audit fix --force
+            npm audit fix --force
 
   deploy-infrastructure:
     docker:
