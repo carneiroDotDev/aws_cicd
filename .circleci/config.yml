@@ -45,3 +45,12 @@ jobs:
           command: |
             # Your code here
             npm run test:coverage
+
+workflows:
+  default:
+    jobs:
+      - build-app
+      - lint-app:
+          requires: [build-app]
+      - test-app:
+          requires: [build-app]
