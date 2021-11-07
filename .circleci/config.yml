@@ -46,6 +46,46 @@ jobs:
             # Your code here
             npm run test:coverage
 
+  scan-app:
+    docker:
+      # Docker image here
+      - image: circleci/node:16.8.0
+    steps:
+      # Checkout code from git
+      - checkout
+      # Restore from cache
+      - restore_cache:
+          key: frontend-build
+      # Your job code here
+      - run:
+          name: scan app for vulnerability
+          command: |
+            # Your code here
+            npm i
+            npm audit fix --audit-level=critical 
+
+  deploy-infrastructure:
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
+    steps:
+      # Checkout code from git
+      - checkout
+      - run:
+          name: Install Tar since its a requesite 
+          command: |
+            yum -y install tar gzip jq git
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"\
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags Name=frontend-${CIRCLE_WORKFLOW_ID:0:7} 
+#       # Here's where you will add some code to rollback on failure     
+      - destroy-environment 
+
 workflows:
   default:
     jobs:
@@ -53,4 +93,6 @@ workflows:
       - lint-app:
           requires: [build-app]
       - test-app:
+          requires: [build-app]
+      - scan-app:
           requires: [build-app]

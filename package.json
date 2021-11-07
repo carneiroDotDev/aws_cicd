@@ -12,12 +12,12 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "export NODE_OPTIONS=--openssl-legacy-provider; react-scripts start",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider; react-scripts build",
-    "test": "export NODE_OPTIONS=--openssl-legacy-provider; react-scripts test",
-    "eject": "export NODE_OPTIONS=--openssl-legacy-provider; react-scripts eject",
-    "test:coverage": "export NODE_OPTIONS=--openssl-legacy-provider; react-scripts test --coverage --watchAll=false",
-    "lint": "export NODE_OPTIONS=--openssl-legacy-provider; node_modules/.bin/eslint --ext js src"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "lint": "node_modules/.bin/eslint --ext js src"
   },
   "eslintConfig": {
     "extends": [

@@ -1,4 +1,5 @@
 FROM node:latest
+RUN export NODE_OPTIONS=--openssl-legacy-provider;
 
 WORKDIR '/app'
 
