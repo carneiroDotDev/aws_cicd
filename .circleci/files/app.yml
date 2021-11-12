@@ -13,7 +13,7 @@ Resources:
       BucketName: !Sub "awscicd-${ID}"
       AccessControl: PublicRead
       WebsiteConfiguration:
-        IndexDocument: public/index.html
+        IndexDocument: index.html
         # ErrorDocument: 404.html
   
   WebsiteBucketPolicy:

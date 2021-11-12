@@ -1,23 +1,28 @@
 version: 2.1
 
-commands:
-  destroy-environment:
-    description: Destroy APP cloudformation stacks given a workflow ID.
-    parameters:
-      # Add parameter here   
-    steps:
-      - run:
-          name: Delete S3 content
-          when: on_fail
-          command: |
-            aws s3 rm s3://awscicd-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            exit 0
-      - run:
-          name: Destroy environments
-          when: on_fail
-          command: |
-            aws cloudformation --region eu-central-1 delete-stack --stack-name awscicd-${CIRCLE_WORKFLOW_ID:0:7}
-            exit 0
+orbs:
+  kubernetes: circleci/kubernetes@0.12.0
+  aws-cli: circleci/aws-cli@2.0
+  aws-eks: circleci/aws-eks@0.2.3
+
+# commands:
+#   destroy-environment:
+#     description: Destroy APP cloudformation stacks given a workflow ID.
+#     parameters:
+#       # Add parameter here   
+#     steps:
+#       - run:
+#           name: Delete S3 content
+#           when: on_fail
+#           command: |
+#             aws s3 rm s3://awscicd-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+#             exit 0
+#       - run:
+#           name: Destroy environments
+#           when: on_fail
+#           command: |
+#             aws cloudformation --region eu-central-1 delete-stack --stack-name awscicd-${CIRCLE_WORKFLOW_ID:0:7}
+#             exit 0
 
 jobs:
   build-app:
@@ -45,7 +50,13 @@ jobs:
           key: frontend-build
       # Your job code here
       - run:
-          name: test frontend
+          name: Dockerfiles lint
+          command: |
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+            chmod +x /bin/hadolint
+            hadolint Dockerfile
+      - run:
+          name: lint app
           command: |
             # Your code here
             npm run lint
@@ -64,29 +75,18 @@ jobs:
           command: |
             # Your code here
             npm run test:coverage
-
-  deploy-infrastructure:
-    docker:
-      # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+  push-app:
+    machine: true
     steps:
-      # Checkout code from git
       - checkout
       - run:
-          name: Install Tar since its a requesite 
+          name: Build docker container
           command: |
-            yum -y install tar gzip jq git
-      - run:
-          name: Ensure front-end infrastructure exist
-          command: |
-            aws cloudformation deploy \
-              --region eu-central-1 \
-              --template-file .circleci/files/app.yml \
-              --stack-name "awscicd-${CIRCLE_WORKFLOW_ID:0:7}"\
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
-              --tags Name=awscicd-${CIRCLE_WORKFLOW_ID:0:7} 
-#       # Here's where you will add some code to rollback on failure     
-      - destroy-environment 
+                docker login --username ${DOCKER_USR} --password ${DOCKER_PSW}
+                docker build -t awscicd:latest .
+                docker images ls
+                docker tag awscicd ${DOCKER_USR}/awscicd:latest
+                docker push ${DOCKER_USR}/awscicd:latest
 
 workflows:
   default:
@@ -96,9 +96,8 @@ workflows:
           requires: [build-app]
       - test-app:
           requires: [build-app]
-      - deploy-infrastructure:
+      - push-app:
           requires: [test-app, lint-app]
           filters:
             branches:
-              #only: [test-feature-branch]
               only: [main]

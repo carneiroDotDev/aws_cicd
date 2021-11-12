@@ -1,14 +1,12 @@
-FROM node:latest
-RUN export NODE_OPTIONS=--openssl-legacy-provider;
+FROM node:16-alpine3.13
 
 WORKDIR '/app'
 
 COPY package.json ./
-ADD public ./public
-ADD src  ./src
+COPY public ./public
+COPY src  ./src
 
-RUN npm install 
-RUN npm run build 
+RUN npm install; npm run build 
 
 EXPOSE 3000
 
