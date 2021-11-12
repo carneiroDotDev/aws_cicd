@@ -79,7 +79,12 @@ jobs:
             # Install hadolint
             wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
             chmod +x /bin/hadolint
-            hadolint ./Dockerfile
+            echo "installed"
+      - run:
+          name: install dependencies
+          command: |
+            ls -lt Dockerfile
+            hadolint Dockerfile
   test-app:
     docker:
       - image: circleci/node:16.13.0
