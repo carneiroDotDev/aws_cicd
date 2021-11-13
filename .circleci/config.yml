@@ -85,7 +85,7 @@ jobs:
                 docker tag awscicd ${DOCKER_USR}/awscicd:latest
                 docker push ${DOCKER_USR}/awscicd:latest
   deploy:
-    machine: true
+    executor: aws-eks/node
     steps:
         - checkout
         - aws-eks/update-kubeconfig-with-authenticator:
