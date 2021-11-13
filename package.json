@@ -23,6 +23,18 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "rules": {
+      "no-unused-vars": "warn"
+    },
+    "overrides": [
+      {
+        "files": ["**/*.js?(x)"],
+        "rules": {
+          "no-console":"error",
+          "max-len": "warn"
+        }
+      }
     ]
   },
   "browserslist": {
