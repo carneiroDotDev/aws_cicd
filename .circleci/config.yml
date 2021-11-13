@@ -103,6 +103,23 @@ jobs:
                 docker images ls
                 docker tag awscicd ${DOCKER_USR}/awscicd:latest
                 docker push ${DOCKER_USR}/awscicd:latest
+  deploy:
+    machine: true
+    steps:
+        - checkout
+        - aws-eks/update-kubeconfig-with-authenticator:
+            cluster-name: awscicd
+            install-kubectl: true
+            aws-region: ${AWS_DEFAULT_REGION}
+            verbose: true
+        - kubernetes/create-or-update-resource:
+            resource-file-path: "kubernetes.yml"
+            get-rollout-status: true
+            resource-name: deployment/awscicd
+        - run:
+            name: Check pod status
+            command: |
+              kubectl get pods
 
 workflows:
   default:
@@ -119,3 +136,5 @@ workflows:
           filters:
             branches:
               only: [main]
+      - deploy:
+          requires: [test-app, lint-app, lint-docker]
