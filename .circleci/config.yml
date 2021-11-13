@@ -5,25 +5,6 @@ orbs:
   aws-cli: circleci/aws-cli@2.0
   aws-eks: circleci/aws-eks@0.2.3
 
-# commands:
-#   destroy-environment:
-#     description: Destroy APP cloudformation stacks given a workflow ID.
-#     parameters:
-#       # Add parameter here   
-#     steps:
-#       - run:
-#           name: Delete S3 content
-#           when: on_fail
-#           command: |
-#             aws s3 rm s3://awscicd-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-#             exit 0
-#       - run:
-#           name: Destroy environments
-#           when: on_fail
-#           command: |
-#             aws cloudformation --region eu-central-1 delete-stack --stack-name awscicd-${CIRCLE_WORKFLOW_ID:0:7}
-#             exit 0
-
 jobs:
   build-app:
     docker:
@@ -137,4 +118,4 @@ workflows:
             branches:
               only: [main]
       - deploy:
-          requires: [test-app, lint-app, lint-docker]
+          requires: [push-app]
