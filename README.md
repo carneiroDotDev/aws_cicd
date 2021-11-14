@@ -2,6 +2,8 @@
 
 Live Demo: http://awscicd-lb-1715428436.eu-central-1.elb.amazonaws.com/
 
+Screenshots and Links summarized in notes.txt file
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
