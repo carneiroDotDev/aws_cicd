@@ -1,3 +1,7 @@
+[![CircleCI](https://circleci.com/gh/carneiroDotDev/aws_cicd/tree/main.svg?style=svg)](https://circleci.com/gh/carneiroDotDev/aws_cicd/tree/main)
+
+Live Demo: http://awscicd-lb-1715428436.eu-central-1.elb.amazonaws.com/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
