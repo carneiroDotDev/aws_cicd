@@ -17,7 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
-    "lint": "node_modules/.bin/eslint --ext js src"
+    "lint": "node_modules/.bin/eslint --ext js src --max-warnings=0"
   },
   "eslintConfig": {
     "extends": [
@@ -31,7 +31,7 @@
       {
         "files": ["**/*.js?(x)"],
         "rules": {
-          "no-console":"error",
+          "no-console":"warn",
           "max-len": "warn"
         }
       }

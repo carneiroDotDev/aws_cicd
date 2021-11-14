@@ -88,19 +88,11 @@ jobs:
     executor: aws-eks/python3
     steps:
         - checkout
-        - aws-eks/update-kubeconfig-with-authenticator:
-            cluster-name: awscicd
-            install-kubectl: true
-            aws-region: ${AWS_DEFAULT_REGION}
-            verbose: true
-        - kubernetes/create-or-update-resource:
-            resource-file-path: "kubernetes.yml"
-            get-rollout-status: true
-            resource-name: deployment/awscicd
         - run:
-            name: Check pod status
+            name: Update Docker Image in ECS
             command: |
-              kubectl get pods
+              chmod +x deploy.sh
+              ./deploy.sh
 
 workflows:
   default:
