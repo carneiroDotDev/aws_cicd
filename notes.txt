@@ -1,6 +1,8 @@
 
 GitHub Repo: https://github.com/carneiroDotDev/aws_cicd
 
+Live demo: http://awscicd-lb-1715428436.eu-central-1.elb.amazonaws.com/
+
 Screenshots: 
 
 1 - Linting (Screenshots/1-EsLintFailling.png + Screenshots/1-EsLintRules.png): in React 
@@ -9,4 +11,6 @@ The screenshots show the failling due to lint rules.
 
 2 - Circle CI pipeline 
 
-3 - Container updated after Circle CI deploy step
+3 - Final update of Load Balancer
+
+4 - ECS container image update 
