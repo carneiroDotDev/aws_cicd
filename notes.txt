@@ -1,0 +1,12 @@
+
+GitHub Repo: https://github.com/carneiroDotDev/aws_cicd
+
+Screenshots: 
+
+1 - Linting (Screenshots/1-EsLintFailling.png + Screenshots/1-EsLintRules.png): in React 
+the application build checks also linting following the rules stablished on package.json. 
+The screenshots show the failling due to lint rules.
+
+2 - Circle CI pipeline 
+
+3 - Container updated after Circle CI deploy step

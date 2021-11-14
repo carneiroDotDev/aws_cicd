@@ -87,7 +87,7 @@ jobs:
   deploy:
     machine: true
     steps:
-        - checkout
+      - checkout
       - run:
           name: Install AWS CLI dependencies
           working_directory: /tmp
@@ -98,8 +98,8 @@ jobs:
             unzip awscliv2.zip
             sudo ./aws/install
         - run:
-            name: Update Docker Image in ECS
-            command: |
+          name: Update Docker Image in ECS
+          command: |
             echo "Pre-Build Steps:"
             echo "authenticating with AWS ECR..."
             aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 919123374228.dkr.ecr.eu-central-1.amazonaws.com
