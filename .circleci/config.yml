@@ -85,7 +85,9 @@ jobs:
                 docker tag awscicd ${DOCKER_USR}/awscicd:latest
                 docker push ${DOCKER_USR}/awscicd:latest
   deploy:
-    executor: aws-eks/python3
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
         - checkout
         - run:
